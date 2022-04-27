@@ -12,3 +12,4 @@ def vigenere_cipher(plaintext: str, key: List[str]) -> str:
         ciphertext += num_to_sym[(sym_to_num[plaintext[i]] + sym_to_num[key[i % r]]) % sym_amount]
     
     return ciphertext
+

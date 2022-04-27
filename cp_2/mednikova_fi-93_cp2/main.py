@@ -1,5 +1,6 @@
 from text_getter import text_getter
 from vigenere_cipher_funcs import vigenere_cipher
+from statistics_funcs import affinity_index, symbol_frequency
 
 fname = 'plaintext.txt'
 try:
@@ -30,22 +31,6 @@ fhandle = open('plaintext_filtered.txt')
 plaintext = fhandle.read()
 fhandle.close()
 
-KEY2 = 'оп'
-KEY3 = 'ршу'
-KEY4 = 'нгав'
-KEY5 = 'длвыц'
-KEY10 = 'мнгшпрнивы'
-KEY11 = 'йфронистыгш'
-KEY12 = 'ьтдюбчяыцнзх'
-KEY13 = 'панроаааэжхйф'
-KEY14 = 'умгшровлыффолл'
-KEY15 = 'зоежлемионлрока'
-KEY16 = 'каваарйжееанкосо'
-KEY17 = 'пдшакуоюжжэсьлеыв'
-KEY18 = 'йцывввффычнссимтъх'
-KEY19 = 'рвоарлтшсщтлыфзххзч'
-KEY20 = 'йгнушйячтлдфыоароывы'
-
 fname = 'result.txt'
 try:
     fhandle = open(fname, 'w')
@@ -55,21 +40,35 @@ except:
     fname = 'result.txt'
     fhandle = open(fname)
 
-fhandle.write('ЗАВДАННЯ 1\n\n')
-fhandle.write('Вихідне повідомлення: {} \n'.format(plaintext))
-fhandle.write('Отриманий шифротекст при довжині ключа = 2: {} \n'.format(vigenere_cipher(text, KEY2)))
-fhandle.write('Отриманий шифротекст при довжині ключа = 3: {} \n'.format(vigenere_cipher(text, KEY3)))
-fhandle.write('Отриманий шифротекст при довжині ключа = 4: {} \n'.format(vigenere_cipher(text, KEY4)))
-fhandle.write('Отриманий шифротекст при довжині ключа = 5: {} \n'.format(vigenere_cipher(text, KEY5)))
-fhandle.write('Отриманий шифротекст при довжині ключа = 10: {} \n'.format(vigenere_cipher(text, KEY10)))
-fhandle.write('Отриманий шифротекст при довжині ключа = 11: {} \n'.format(vigenere_cipher(text, KEY11)))
-fhandle.write('Отриманий шифротекст при довжині ключа = 12: {} \n'.format(vigenere_cipher(text, KEY12)))
-fhandle.write('Отриманий шифротекст при довжині ключа = 13: {} \n'.format(vigenere_cipher(text, KEY13)))
-fhandle.write('Отриманий шифротекст при довжині ключа = 14: {} \n'.format(vigenere_cipher(text, KEY14)))
-fhandle.write('Отриманий шифротекст при довжині ключа = 15: {} \n'.format(vigenere_cipher(text, KEY15)))
-fhandle.write('Отриманий шифротекст при довжині ключа = 16: {} \n'.format(vigenere_cipher(text, KEY16)))
-fhandle.write('Отриманий шифротекст при довжині ключа = 17: {} \n'.format(vigenere_cipher(text, KEY17)))
-fhandle.write('Отриманий шифротекст при довжині ключа = 18: {} \n'.format(vigenere_cipher(text, KEY18)))
-fhandle.write('Отриманий шифротекст при довжині ключа = 19: {} \n'.format(vigenere_cipher(text, KEY19)))
-fhandle.write('Отриманий шифротекст при довжині ключа = 20: {} \n'.format(vigenere_cipher(text, KEY20)))
+keys = ['оп', 'ршу', 'нгав', 'длвыц', 'мнгшпрнивы', 'йфронистыгш', 'ьтдюбчяыцнзх', 
+        'панроаааэжхйф', 'умгшровлыффолл', 'зоежлемионлрока', 'каваарйжееанкосо', 'пдшакуоюжжэсьлеыв', 
+        'йцывввффычнссимтъх', 'рвоарлтшсщтлыфзххзч', 'йгнушйячтлдфыоароывы']
+
+fhandle.write('-' * 10)
+fhandle.write('\nЗАВДАННЯ 1\n')
+fhandle.write('-' * 10)
+fhandle.write('\nВихідне повідомлення (ВП): {} \n'.format(plaintext))
+ciphertexts = {len(key): vigenere_cipher(plaintext, key) for key in keys}
+for key_len, cipher in ciphertexts.items():
+    fhandle.write('Отриманий шифротекст(ШТ) при довжині ключа = {}: {} \n'.format(key_len, cipher))
+
+fhandle.write('\n'+ ('-' * 10))
+fhandle.write('\nЗАВДАННЯ 2\n')
+fhandle.write('-' * 10)
+f2name = 'text_for_theoretical_affinity_index.txt'
+try:
+    f2handle = open(f2name)
+except:
+    print('File cannot be opened: ', f2name)
+    print('Default file will be used')
+    f2name = 'text_for_theoretical_affinity_index.txt'
+    f2handle = open(f2name)
+fhandle.write('\nТеоретичний індекс відповідності: {:.5f} \n'.format(affinity_index(f2handle.read())))
+f2handle.close()
+fhandle.write('Індекс відповідності ВП: {:.5f} \n'.format(affinity_index(plaintext)))
+affinity_inds = {len(key): affinity_index(ciphertexts[len(key)]) for key in keys}
+for key_len, af_ind in affinity_inds.items():
+    fhandle.write('Індекс відповідності ШТ при довжині ключа = {}: {:.5f} \n'.format(key_len, af_ind))
+
 fhandle.close()
+
