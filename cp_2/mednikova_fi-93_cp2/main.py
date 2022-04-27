@@ -63,7 +63,7 @@ except:
     print('Default file will be used')
     f2name = 'text_for_theoretical_affinity_index.txt'
     f2handle = open(f2name)
-fhandle.write('\nТеоретичний індекс відповідності: {:.5f} \n'.format(affinity_index(f2handle.read())))
+fhandle.write('\nТеоретичний індекс відповідності: {:.5f} \n'.format(affinity_index(text_getter(f2handle.read()))))
 f2handle.close()
 fhandle.write('Індекс відповідності ВП: {:.5f} \n'.format(affinity_index(plaintext)))
 affinity_inds = {len(key): affinity_index(ciphertexts[len(key)]) for key in keys}
