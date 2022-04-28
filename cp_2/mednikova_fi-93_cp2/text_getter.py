@@ -16,5 +16,4 @@ def text_getter(text:str, repl: Dict[str, str] = {}, alphabet:List = alphabet) -
         for symbol in dellist:
             text = text.replace(symbol, '')
         text = ' '.join(text.split())
-
     return text
