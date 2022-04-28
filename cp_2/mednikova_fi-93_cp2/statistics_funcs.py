@@ -36,6 +36,7 @@ def key_len_definer(ciphertext: str, theoretical_af_ind: float) -> int:
         if round(af_ind, 3) - 0.005 <= round(theoretical_af_ind, 4) <= round(af_ind, 3) + 0.005:
             return key_len
         key_len += 1
+    
 
 def key_frequency_definer(lang_text: str, ciphertext: str, th_af_ind: int) -> str:
     key = ''
