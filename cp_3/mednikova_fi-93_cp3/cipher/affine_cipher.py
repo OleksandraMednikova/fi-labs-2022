@@ -13,7 +13,7 @@ def bigram_num(bigram: str, alphabet: List[str]=alphabet) -> int:
     bigram_num = sym_num[bigram[0]] * len(alphabet) + sym_num[bigram[1]]
     return bigram_num
 
-def bigrams_to_nums(alphabet: List[str]=alphabet) -> int:
+def bigrams_to_nums(alphabet: List[str]=alphabet) -> Dict[str, int] :
     bigrams_to_num = {}
     sym_amount = len(alphabet)
     for i in range(sym_amount):
@@ -22,7 +22,7 @@ def bigrams_to_nums(alphabet: List[str]=alphabet) -> int:
             bigrams_to_num[bigram] = bigram_num(bigram)
     return bigrams_to_num
 
-def nums_to_bigrams() -> str:
+def nums_to_bigrams() -> Dict[int, str]:
     return {num: bigram for bigram, num in bigrams_to_nums().items()}
 
 bigram_to_num = bigrams_to_nums()
@@ -33,7 +33,8 @@ def text_to_bigrams(text: str) -> List[str]:
     text_bigrams = [letters_list[i] + letters_list[i+1] for i in range(0, len(letters_list)-1, 2)]
     return text_bigrams
 
-def affine_cipher(plaintext: str, key: Tuple[int, int], alphabet: List[str]=alphabet) -> str:
+Key = Tuple[int, int]
+def affine_cipher(plaintext: str, key: Key, alphabet: List[str]=alphabet) -> str:
     ciphertext = ''
     a, b = key
     module = len(alphabet) ** 2
@@ -43,7 +44,7 @@ def affine_cipher(plaintext: str, key: Tuple[int, int], alphabet: List[str]=alph
             ciphertext += num_to_bigram[(a * bigram_to_num[bigram] + b) % module]
     return ciphertext
 
-def affine_decipher(ciphertext: str, key: Tuple[int, int], alphabet: List[str]=alphabet) -> str:
+def affine_decipher(ciphertext: str, key: Key, alphabet: List[str]=alphabet) -> str:
     plaintext = ''
     a, b = key
     module = len(alphabet) ** 2

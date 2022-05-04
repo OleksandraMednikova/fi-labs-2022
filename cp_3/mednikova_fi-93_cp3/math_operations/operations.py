@@ -26,7 +26,8 @@ def inversed_element(a: int, n: int) -> Union[int, bool]:
 
 def solve_congruence(eq: Tuple[int, int, int]) -> Union[List[Tuple[int, int]], bool]:
     # Розв'язання лінійної конґруенції ax = b (mod n)
-    a, b, n = eq
+    n = eq[2]
+    a, b = eq[0] % n, eq[1] % n
     if 0 < a < n and 0 < b < n:
         d1_1 = extended_euclid(a, n)[0]
         d1_2 = extended_euclid(b, n)[0]
