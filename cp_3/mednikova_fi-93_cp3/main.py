@@ -30,5 +30,17 @@ ciphertext = text_getter(fhandle.read())
 ciphertext_freq = bigram_frequency_without_intersection(ciphertext)[:5]
 fhandle.close()
 
+fname = 'txt/result.txt'
+try:
+    fhandle = open(fname, 'w')
+except:
+    print('File cannot be opened: ', fname)
+    print('Default file will be used')
+    fname = 'txt/result.txt'
+    fhandle = open(fname, 'w')
+
+fhandle.write("П'ять найчастіших біграм шифротексту: {} \n".format(ciphertext_freq))
 for key in key_definer(text_for_theoretical_freq1, ciphertext):
-    print(affine_decipher(ciphertext, key))
+    fhandle.write('Отриманий ключ: {} \n'.format(key))
+    fhandle.write('Розшифрований текст: {} \n'.format(affine_decipher(ciphertext, key)))
+fhandle.close()

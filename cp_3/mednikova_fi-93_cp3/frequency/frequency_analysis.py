@@ -55,10 +55,10 @@ def possible_keys_frequency_definer(ciphertext: str, lang_text: str='стнот�
                             keys += find_possible_key(system, module)                  
     return set(keys)
 
-forbidden_bigrams = ['аь', 'еь', 'иь', 'оь', 'уь', 'ыь', 'эь', 'юь', 'яь']
+some_forbidden_bigrams = ['аь', 'еь', 'иь', 'оь', 'уь', 'ыь', 'эь', 'юь', 'яь']
 # Перевірка ключа
-def is_key(plaintext: str, top_syms_in_lang: List[str], top: int, forbidden_bigrams: List[str]=forbidden_bigrams) -> bool:
-    for bg in forbidden_bigrams: 
+def is_key(plaintext: str, top_syms_in_lang: List[str], top: int, forbidden_bigrams: List[str]=some_forbidden_bigrams) -> bool:
+    for bg in some_forbidden_bigrams: 
         if bg in plaintext:
             return False
 
@@ -66,7 +66,7 @@ def is_key(plaintext: str, top_syms_in_lang: List[str], top: int, forbidden_bigr
     return len([sym for sym in top_syms_in_lang if sym in top_syms_in_plaintext]) > top-2
 
 # Аналізує отримані повідомлення та визначає точний ключ 
-def key_definer(lang_text: str, ciphertext: str, alphabet: List[str]=alphabet) -> Union[Key, List[Key]]:
+def key_definer(lang_text: str, ciphertext: str, alphabet: List[str]=alphabet) -> List[Key]:
     keys = []
     top = 5
     top_syms_in_lang = [pair[0] for pair in symbol_frequency(lang_text, sort=True)[:top]]
