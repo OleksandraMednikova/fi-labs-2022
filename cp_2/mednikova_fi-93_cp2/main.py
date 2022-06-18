@@ -1,4 +1,5 @@
-from text_getter import text_getter
+import csv
+from text_getter import alphabet, text_getter
 from vigenere_cipher_funcs import vigenere_cipher, vigenere_decipher
 from statistics_funcs import affinity_index, key_M_definer, key_frequency_definer, key_len_definer
 
@@ -93,7 +94,12 @@ fhandle.write('Текст, отриманий з ШТ з ключем |{}|: {}\n
 key = 'чугунныенебеса'
 fhandle.write('Відкорегований ключ: {}\n'.format(key))
 fhandle.write('Текст, отриманий з ШТ з ключем |{}|: {}\n'.format(key, vigenere_decipher(ciphertext, key)[:400]))
-key = key_M_definer(text_for_theoretical_af_ind, ciphertext, theoretical_af_ind)
+key, table = key_M_definer(text_for_theoretical_af_ind, ciphertext, theoretical_af_ind)
 fhandle.write('Ключ, знайдений за допомогою функції M_i(g): {}\n'.format(key))
 fhandle.write('Текст, отриманий з ШТ з ключем |{}|: {}\n'.format(key, vigenere_decipher(ciphertext, key)[:400]))
 fhandle.close()
+
+with open('M(g)_output.csv', 'w') as csv_handle:
+    csv_writer = csv.writer(csv_handle, delimiter=',')
+    csv_writer.writerow(alphabet)
+    for row in table: csv_writer.writerow(row)

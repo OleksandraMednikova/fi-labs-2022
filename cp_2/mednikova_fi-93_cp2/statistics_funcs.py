@@ -54,15 +54,24 @@ def g_definer(lang_freq: Dict[str, float], block: str) -> int:
     for g in range(sym_amount):
         for t in range(sym_amount):
             M_cur[g] = M_cur.get(g, 0) + lang_freq[num_to_sym[t]] * symbol_frequency(block).get(num_to_sym[(t + g) % sym_amount], 0)
+
+    cur_output = []
+    for g in M_cur.values():
+        cur_output.append(round(g, 1))
+
     g = [g for g, v in M_cur.items() if v == max(M_cur.values())][0]
-    return g
+    return g, cur_output
 
 def key_M_definer(lang_text: str, ciphertext: str, th_af_ind: int) -> str:
     key = ''
     key_len = key_len_definer(ciphertext, th_af_ind)
     blocks = ciphertext_to_blocks(ciphertext, key_len)
     lang_freq = {letter: freq / sym_amount for letter, freq in symbol_frequency(lang_text).items()}
-
+    
+    table = []
     for i in range(key_len):
-        key += num_to_sym[g_definer(lang_freq, blocks['Y{}'.format(i)])]
-    return key
+        temp = g_definer(lang_freq, blocks['Y{}'.format(i)])
+        key += num_to_sym[temp[0]]
+        table.append(temp[1])
+
+    return key, table
